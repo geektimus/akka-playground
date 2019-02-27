@@ -6,21 +6,18 @@ case class StartProcessFileMsg()
 
 class WordCounterActor(filename: String) extends Actor with ActorLogging {
 
-  private val running = false
-
+  private var running = false
   private var totalLines = 0
   private var linesProcessed = 0
   private var result = 0
   private var fileSender: Option[ActorRef] = None
 
-  override def receive: Receive = onMessage(running)
-
-  private def onMessage(running: Boolean): Receive = {
+  def receive: Receive = {
     case StartProcessFileMsg() => {
       if (running) {
         log.warning("Warning: duplicate start message received")
       } else {
-        context.become(onMessage(true))
+        running = true
         fileSender = Some(sender) // save reference to process invoker
         import scala.io.Source._
         fromFile(filename).getLines.foreach { line =>

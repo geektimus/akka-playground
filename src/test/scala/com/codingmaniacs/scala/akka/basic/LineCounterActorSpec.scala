@@ -15,7 +15,7 @@ class LineCounterActorSpec extends TestKit(ActorSystem("LineCounterActorSpec")) 
 
   "A Line Counter Actor" should {
 
-    val actorProps = Props(new LineCounterActor(Some(testActor)))
+    val actorProps = Props(new LineCounterActor())
     val actor = system.actorOf(actorProps, "actor-to-test")
 
     val firstLine = ProcessStringMsg("Yo, I am the first line on the test file")
